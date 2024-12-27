@@ -1,0 +1,25 @@
+1. User Management 
+-> user registration with jwt and social login like google only 
+-> login/logout
+-> user roles decide karenge ki user customer hai ya admin ek field create karenge user schema mein isAdmin jo by default false hogi but jis bhi user ke liye yeh field true hogi usko admin dashboard vala button show kiya jayega 
+
+2. Room Management ( Admin Only )
+-> Add Rooms
+-> Edit Rooms
+-> Delete Rooms
+
+3. Room Listing Feature 
+-> customers can view the room with room name, description, price, and availability
+
+-> Search and Filter rooms on the basis of price range, room type, availability 
+
+4. Booking System 
+-> user can book the room by providing check in and check out dates and number of guests 
+-> check availability of rooms automatically during the selected dates
+
+5. Payment Gateway Integration 
+-> Stripe ya Razorpay
+
+6. Admin Dashboard 
+-> Admin can view total bookings and total revenue
+
