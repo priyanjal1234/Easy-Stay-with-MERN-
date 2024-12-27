@@ -3,7 +3,7 @@ import api from "./api";
 class RoomService {
   constructor() {
     this.api = api;
-    this.baseUrl = "http://localhost:3000/api";
+    this.baseUrl = "https://easy-stay-with-mern-backend.onrender.com/api";
   }
 
   async createRoom(roomData) {
