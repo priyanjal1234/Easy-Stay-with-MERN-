@@ -3,7 +3,7 @@ import api from "./api";
 class BookingService {
   constructor() {
     this.api = api;
-    this.baseUrl = "http://localhost:3000/api/bookings";
+    this.baseUrl = "https://easy-stay-with-mern-backend.onrender.com/api/bookings";
   }
 
   async createBooking(
