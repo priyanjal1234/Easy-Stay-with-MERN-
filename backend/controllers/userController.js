@@ -77,7 +77,7 @@ module.exports.verifyUserEmail = async function (req, res) {
       user.isVerified = true;
       await user.save();
       let token = jwt.sign({ email, name: user.name }, process.env.JWT_KEY);
-      res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "None" });
+      res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: "None" });
       return res.status(200).json({ message: "Email Verified Successfully" });
     } else {
       return res.status(401).json({ message: "Invalid Verification Code" });
@@ -104,7 +104,7 @@ module.exports.loginUser = async function (req, res) {
       if (result) {
         let token = jwt.sign({ email, name: user.name }, process.env.JWT_KEY);
         res.cookie("token", token, {
-         maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "None"
+         maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: "None"
         });
         return res.status(200).json({ message: "Login Success" });
       } else {
