@@ -3,7 +3,7 @@ import api from "./api";
 class UserService {
   constructor() {
     this.api = api;
-    this.baseUrl = "http://localhost:3000/api/users";
+    this.baseUrl = "https://easy-stay-with-mern-backend.onrender.com/api/users";
   }
 
   async userSignUp({ name, email, password, address, phoneNumber }) {
