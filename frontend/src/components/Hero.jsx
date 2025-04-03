@@ -22,11 +22,7 @@ const Hero = () => {
     // Apply guest filter
     if (guestFilter) {
       filtered = filtered.filter((room) => {
-        const maxGuests = room?.maxGuests || 0;
-        if (guestFilter === "4+ Guests") {
-          return maxGuests >= 4;
-        }
-        return maxGuests >= parseInt(guestFilter, 10);
+        return Number(guestFilter) === room?.maxGuests
       });
     }
 
@@ -69,7 +65,7 @@ const Hero = () => {
                 <option value="1">1 Guest</option>
                 <option value="2">2 Guests</option>
                 <option value="3">3 Guests</option>
-                <option value="4+">4+ Guests</option>
+                <option value="5">4+ Guests</option>
               </select>
             </div>
           </div>
