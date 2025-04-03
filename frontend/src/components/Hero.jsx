@@ -4,16 +4,38 @@ import { useSelector } from "react-redux";
 import RoomCard from "./RoomCard";
 
 const Hero = () => {
+  // Get the full list of rooms from Redux
   const { allRooms } = useSelector((state) => state.room);
+  
+  // Local state for search query and guest filter.
   const [searchQuery, setSearchQuery] = useState("");
+  const [guestFilter, setGuestFilter] = useState(""); // Empty means no guest filter
 
-  // Memoize filtered rooms based on the search query
+  // Filter rooms based on room name and guest capacity
   const filteredRooms = useMemo(() => {
-    if (!searchQuery.trim()) return allRooms;
-    return allRooms?.filter((room) =>
-      room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, allRooms]);
+    let rooms = allRooms;
+
+    // Filter by search query if provided
+    if (searchQuery.trim()) {
+      rooms = rooms.filter((room) =>
+        room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Filter by guest capacity if selected
+    if (guestFilter) {
+      if (guestFilter === "4+ Guests") {
+        // For "4+ Guests", filter rooms that can accommodate 4 or more guests.
+        rooms = rooms.filter((room) => room.capacity >= 4);
+      } else {
+        // For "1 Guest", "2 Guests", etc. extract the number and filter.
+        const guestCount = parseInt(guestFilter, 10);
+        rooms = rooms.filter((room) => room.capacity >= guestCount);
+      }
+    }
+
+    return rooms;
+  }, [searchQuery, guestFilter, allRooms]);
 
   return (
     <div className="hero px-5 py-8">
@@ -35,8 +57,7 @@ const Hero = () => {
               <input
                 type="text"
                 placeholder="Search rooms..."
-                className="w-full pl-10 pr-4 py-2 rounded-lg 
-                           outline-none bg-gray-700 placeholder-gray-400"
+                className="w-full pl-10 pr-4 py-2 rounded-lg outline-none bg-gray-700 placeholder-gray-400"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -44,13 +65,15 @@ const Hero = () => {
             <div className="relative">
               <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <select
-                className="w-full pl-10 pr-4 py-2 rounded-lg 
-                           outline-none bg-gray-700"
+                className="w-full pl-10 pr-4 py-2 rounded-lg outline-none bg-gray-700"
+                value={guestFilter}
+                onChange={(e) => setGuestFilter(e.target.value)}
               >
-                <option>1 Guest</option>
-                <option>2 Guests</option>
-                <option>3 Guests</option>
-                <option>4+ Guests</option>
+                <option value="">Any Guests</option>
+                <option value="1 Guest">1 Guest</option>
+                <option value="2 Guests">2 Guests</option>
+                <option value="3 Guests">3 Guests</option>
+                <option value="4+ Guests">4+ Guests</option>
               </select>
             </div>
           </div>
