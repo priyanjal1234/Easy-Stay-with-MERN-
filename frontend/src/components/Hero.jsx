@@ -15,7 +15,7 @@ const Hero = () => {
           Book comfortable rooms at the best prices
         </p>
       </div>
-      <SearchBar />
+      <SearchBar allRooms = {allRooms}/>
 
       <div className="flex gap-5 flex-wrap">
         {allRooms?.map((room) => (
