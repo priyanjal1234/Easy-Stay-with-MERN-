@@ -4,37 +4,27 @@ import { useSelector } from "react-redux";
 import RoomCard from "./RoomCard";
 
 const Hero = () => {
-  // Get the full list of rooms from Redux
   const { allRooms } = useSelector((state) => state.room);
-  
-  // Local state for search query and guest filter.
   const [searchQuery, setSearchQuery] = useState("");
   const [guestFilter, setGuestFilter] = useState(""); // Empty means no guest filter
 
-  // Filter rooms based on room name and guest capacity
   const filteredRooms = useMemo(() => {
-    let rooms = allRooms;
+    return allRooms?.filter((room) => {
+      // Check if room matches search query
+      const matchesSearch = searchQuery.trim()
+        ? room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
 
-    // Filter by search query if provided
-    if (searchQuery.trim()) {
-      rooms = rooms.filter((room) =>
-        room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+      // Check if room matches guest filter
+      const matchesGuest = guestFilter
+        ? guestFilter === "4+ Guests"
+          ? room.capacity >= 4
+          : room.capacity >= parseInt(guestFilter, 10)
+        : true;
 
-    // Filter by guest capacity if selected
-    if (guestFilter) {
-      if (guestFilter === "4+ Guests") {
-        // For "4+ Guests", filter rooms that can accommodate 4 or more guests.
-        rooms = rooms.filter((room) => room.capacity >= 4);
-      } else {
-        // For "1 Guest", "2 Guests", etc. extract the number and filter.
-        const guestCount = parseInt(guestFilter, 10);
-        rooms = rooms.filter((room) => room.capacity >= guestCount);
-      }
-    }
-
-    return rooms;
+      // Only include room if both conditions are met
+      return matchesSearch && matchesGuest;
+    });
   }, [searchQuery, guestFilter, allRooms]);
 
   return (
