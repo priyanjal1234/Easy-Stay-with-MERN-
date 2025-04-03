@@ -21,7 +21,7 @@ export default function SearchBar({allRooms}) {
       }
     }
     searchRooms()
-  },[searchQuery])
+  },[searchQuery,allRooms,dispatch])
   
   return (
     <div className="max-w-4xl mx-auto p-4">
