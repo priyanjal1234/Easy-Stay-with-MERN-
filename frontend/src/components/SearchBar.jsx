@@ -16,6 +16,9 @@ export default function SearchBar({allRooms}) {
       })
       dispatch(setAllRooms(filtered))
       }
+      else {
+        dispatch(setAllRooms(allRooms))
+      }
     }
     searchRooms()
   },[searchQuery])
