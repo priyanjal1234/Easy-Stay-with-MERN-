@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import { Search, Users } from "lucide-react";
+import {setAllRooms} from '../redux/reducers/RoomReducer.jsx'
 
 export default function SearchBar({allRooms}) {
   const [searchQuery,setsearchQuery] = useState('')
