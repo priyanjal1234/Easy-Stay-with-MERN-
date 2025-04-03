@@ -23,7 +23,7 @@ const Hero = () => {
         : true;
 
       // Only include room if both conditions are met
-      return matchesSearch && matchesGuest;
+      return matchesSearch || matchesGuest;
     });
   }, [searchQuery, guestFilter, allRooms]);
 
