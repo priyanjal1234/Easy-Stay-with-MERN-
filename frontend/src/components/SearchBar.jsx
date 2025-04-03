@@ -1,17 +1,21 @@
 import React,{useState} from "react";
 import { Search, Users } from "lucide-react";
-import {setAllRooms} from '../redux/reducers/RoomReducer.jsx'
+import {setAllRooms} from '../redux/reducers/RoomReducer.js'
+import {useDispatch} from 'react-redux'
 
 export default function SearchBar({allRooms}) {
   const [searchQuery,setsearchQuery] = useState('')
 
+  const dispatch = useDispatch()
   useEffect(() => {
     let filtered 
     function searchRooms() {
-      filtered = allRooms?.filter((room) => {
+      if(searchQuery !== "") {
+        filtered = allRooms?.filter((room) => {
         return room?.roomName?.startsWith(searchQuery)
       })
-      
+      dispatch(setAllRooms(filtered))
+      }
     }
     searchRooms()
   },[searchQuery])
