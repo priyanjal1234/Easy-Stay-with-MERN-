@@ -20,8 +20,8 @@ const Hero = () => {
       // Check if room matches guest filter (if provided)
       const matchesGuest = guestFilter
         ? guestFilter === "4+ Guests"
-          ? room.capacity >= 4
-          : room.capacity >= parseInt(guestFilter, 10)
+          ? room.maxGuests >= 4
+          : room.maxGuests >= parseInt(guestFilter, 10)
         : true;
 
       // Only include room if it meets both criteria
