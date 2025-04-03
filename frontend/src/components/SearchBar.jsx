@@ -1,28 +1,25 @@
-import React,{useState,useEffect} from "react";
+import React, { useState } from "react";
 import { Search, Users } from "lucide-react";
-import {setAllRooms} from '../redux/reducers/RoomReducer.js'
-import {useDispatch} from 'react-redux'
+import { setAllRooms } from "../redux/reducers/RoomReducer.js";
+import { useDispatch } from "react-redux";
 
-export default function SearchBar({allRooms}) {
-  const [searchQuery,setsearchQuery] = useState('')
+export default function SearchBar({ allRooms }) {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const dispatch = useDispatch()
-  useEffect(() => {
-    let filtered 
-    function searchRooms() {
-      if(searchQuery !== "") {
-        filtered = allRooms?.filter((room) => {
-        return room?.roomName?.startsWith(searchQuery)
-      })
-      dispatch(setAllRooms(filtered))
-      }
-      else {
-        dispatch(setAllRooms(allRooms))
-      }
+  const dispatch = useDispatch();
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      dispatch(setAllRooms(allRooms)); // Reset to all rooms when search is empty
+    } else {
+      const filteredRooms = allRooms?.filter((room) =>
+        room?.roomName?.toLowerCase().startsWith(query.toLowerCase())
+      );
+      dispatch(setAllRooms(filteredRooms));
     }
-    searchRooms()
-  },[searchQuery,allRooms,dispatch])
-  
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-gray-800 text-white rounded-lg shadow-md p-6 transition-colors">
@@ -36,8 +33,8 @@ export default function SearchBar({allRooms}) {
                 outline-none
                 bg-gray-700   
                 placeholder-gray-400"
-              value = {searchQuery}
-              onChange = {e => setsearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
           <div className="relative">
