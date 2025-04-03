@@ -6,27 +6,30 @@ import RoomCard from "./RoomCard";
 const Hero = () => {
   const { allRooms } = useSelector((state) => state.room);
   const [searchQuery, setSearchQuery] = useState("");
-  const [guestFilter, setGuestFilter] = useState(""); // Empty means no guest filter
+  const [guestFilter, setGuestFilter] = useState("");
   const [filteredRooms, setFilteredRooms] = useState(allRooms);
 
   useEffect(() => {
-    // Filter rooms based on both search query and guest filter
-    const filtered = allRooms?.filter((room) => {
-      // Check if room matches search query (if provided)
-      const matchesSearch = searchQuery.trim()
-        ? room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
-        : true;
+    let filtered = allRooms;
 
-      // Check if room matches guest filter (if provided)
-      const matchesGuest = guestFilter
-        ? guestFilter === "4+ Guests"
-          ? room.maxGuests >= 4
-          : room.maxGuests >= parseInt(guestFilter, 10)
-        : true;
+    // Apply search filter
+    if (searchQuery.trim()) {
+      filtered = filtered.filter((room) =>
+        room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-      // Only include room if it meets both criteria
-      return matchesSearch && matchesGuest;
-    });
+    // Apply guest filter
+    if (guestFilter) {
+      filtered = filtered.filter((room) => {
+        const maxGuests = room?.maxGuests || 0;
+        if (guestFilter === "4+ Guests") {
+          return maxGuests >= 4;
+        }
+        return maxGuests >= parseInt(guestFilter, 10);
+      });
+    }
+
     setFilteredRooms(filtered);
   }, [searchQuery, guestFilter, allRooms]);
 
@@ -63,10 +66,10 @@ const Hero = () => {
                 onChange={(e) => setGuestFilter(e.target.value)}
               >
                 <option value="">Any Guests</option>
-                <option value="1 Guest">1 Guest</option>
-                <option value="2 Guests">2 Guests</option>
-                <option value="3 Guests">3 Guests</option>
-                <option value="4+ Guests">4+ Guests</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4+">4+ Guests</option>
               </select>
             </div>
           </div>
@@ -75,9 +78,13 @@ const Hero = () => {
 
       {/* Render room cards from filteredRooms */}
       <div className="flex gap-5 flex-wrap">
-        {filteredRooms?.map((room) => (
-          <RoomCard key={room.id} room={room} />
-        ))}
+        {filteredRooms.length > 0 ? (
+          filteredRooms.map((room) => <RoomCard key={room._id} room={room} />)
+        ) : (
+          <p className="text-center text-gray-500 w-full">
+            No rooms match your search criteria.
+          </p>
+        )}
       </div>
     </div>
   );
