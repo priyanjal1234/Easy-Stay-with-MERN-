@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Users } from "lucide-react";
 import { useSelector } from "react-redux";
 import RoomCard from "./RoomCard";
@@ -7,24 +7,27 @@ const Hero = () => {
   const { allRooms } = useSelector((state) => state.room);
   const [searchQuery, setSearchQuery] = useState("");
   const [guestFilter, setGuestFilter] = useState(""); // Empty means no guest filter
+  const [filteredRooms, setFilteredRooms] = useState(allRooms);
 
-  const filteredRooms = useMemo(() => {
-    return allRooms?.filter((room) => {
-      // Check if room matches search query
+  useEffect(() => {
+    // Filter rooms based on both search query and guest filter
+    const filtered = allRooms?.filter((room) => {
+      // Check if room matches search query (if provided)
       const matchesSearch = searchQuery.trim()
         ? room?.roomName?.toLowerCase().includes(searchQuery.toLowerCase())
         : true;
 
-      // Check if room matches guest filter
+      // Check if room matches guest filter (if provided)
       const matchesGuest = guestFilter
         ? guestFilter === "4+ Guests"
           ? room.capacity >= 4
           : room.capacity >= parseInt(guestFilter, 10)
         : true;
 
-      // Only include room if both conditions are met
-      return matchesSearch || matchesGuest;
+      // Only include room if it meets both criteria
+      return matchesSearch && matchesGuest;
     });
+    setFilteredRooms(filtered);
   }, [searchQuery, guestFilter, allRooms]);
 
   return (
