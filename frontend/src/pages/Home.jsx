@@ -16,7 +16,7 @@ const Home = () => {
     queryKey: ["loggedinUser"],
     queryFn: async function () {
       let loggedinUser = await userService.getLoggedinUser();
-      console.log(loggedinUser.data)
+      
       return dispatch(setUser(loggedinUser.data));
     },
   });
