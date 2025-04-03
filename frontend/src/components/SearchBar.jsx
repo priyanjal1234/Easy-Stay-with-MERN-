@@ -1,7 +1,20 @@
-import React from "react";
+import React,{useState} from "react";
 import { Search, Users } from "lucide-react";
 
-export default function SearchBar() {
+export default function SearchBar({allRooms}) {
+  const [searchQuery,setsearchQuery] = useState('')
+
+  useEffect(() => {
+    let filtered 
+    function searchRooms() {
+      filtered = allRooms?.filter((room) => {
+        return room?.roomName?.startsWith(searchQuery)
+      })
+      
+    }
+    searchRooms()
+  },[searchQuery])
+  
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-gray-800 text-white rounded-lg shadow-md p-6 transition-colors">
@@ -15,6 +28,8 @@ export default function SearchBar() {
                 outline-none
                 bg-gray-700   
                 placeholder-gray-400"
+              value = {searchQuery}
+              onChange = {e => setsearchQuery(e.target.value)}
             />
           </div>
           <div className="relative">
