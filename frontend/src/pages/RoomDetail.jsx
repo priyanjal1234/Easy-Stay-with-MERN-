@@ -27,7 +27,7 @@ const RoomDetail = () => {
 
   let { currentRoom } = useSelector((state) => state.room);
   let { user } = useSelector((state) => state.user);
-  console.log(user)
+  
   let { totalprice } = useSelector((state) => state.booking);
 
   let query3 = useQuery({
